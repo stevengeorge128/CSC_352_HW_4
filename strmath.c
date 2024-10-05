@@ -28,6 +28,10 @@ void newlineToNullTerm(char *operation)
 
 int isArrayNumeric(char *str)
 {
+    if (strcmp(str, "") == 0){
+        fprintf(stderr, "Error: line does not contain any digits\n");
+        exit(1);
+    }
     for (int i = 0; i < strlen(str); i++)
     {
         if (!isdigit(str[i]))
@@ -258,7 +262,7 @@ char *addStrings(char *str1, char *str2)
     if (strlen(str1) > strlen(str2))
     {
         size = strlen(str1);
-        result = malloc(sizeof(char) * (size + 1));
+        result = malloc(sizeof(char) * (size + 2));
         if (result == NULL)
         {
             fprintf(stderr, "Error: Out of memory");
@@ -271,7 +275,7 @@ char *addStrings(char *str1, char *str2)
     else
     {
         size = strlen(str2);
-        result = malloc(size + 1);
+        result = malloc(sizeof(char) * (size + 2));
         if (result == NULL)
         {
             fprintf(stderr, "Error: Out of memory");
@@ -308,6 +312,13 @@ char *addStrings(char *str1, char *str2)
         result[i] = singleValResultInt + '0';
     }
 
+
+
+    if (carry == 1)
+    {
+        result[0] = '1';
+        return result;
+    }
     return removeLeadingZeros(result);
 }
 
