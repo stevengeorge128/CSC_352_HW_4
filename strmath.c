@@ -138,14 +138,14 @@ char *subtractString(char *str1, char *str2)
     result[size] = '\0';
     borrow = 0;
 
-    // printf("arrA is %s\n", arrA);
-    // printf("arrB is %s\n", arrB);
+    printf("arrA is %s\n", arrA);
+    printf("arrB is %s\n", arrB);
     for (int i = size - 1; i >= 0; i--)
     {
-        // printf("Looping --------------------\n");
-        // printf("arrA is %s\n", arrA);
-        // printf("arrB is %s\n", arrB);
-        // printf("i is %d\n", i);
+        printf("Looping --------------------\n");
+        printf("arrA is %s\n", arrA);
+        printf("arrB is %s\n", arrB);
+        printf("i is %d\n", i);
         charA = arrA[i];
         charB = arrB[i];
         intA = charA - '0';
@@ -154,7 +154,7 @@ char *subtractString(char *str1, char *str2)
         // {
         //     intA--;
         // }
-        // printf("before if intA is %d\n", intA);
+        printf("before if intA is %d\n", intA);
         // if (intA < (intB + borrow))
         // {
         //     // intA += 10;
@@ -171,40 +171,56 @@ char *subtractString(char *str1, char *str2)
         //     singleValResultInt = intA - intB - borrow;
         //     borrow = 0; // No need to borrow
         // }
+        // if (intA < intB)
+        // {
+        //     intA += 10;
+        //     borrow = 1;
+        //     singleValResultInt = intA - intB;
+        // }
+        // else
+        // {
+        //     if (borrow == 1)
+        //     {
+        //         printf("intA decremented by 1");
+        //         intA--;
+        //     }
+        //     if (intA < intB)
+        //     {
+        //         intA += 10;
+        //         borrow = 1;
+        //         singleValResultInt = intA - intB;
+        //     }
+        //     else
+        //     {
+        //         borrow = 0;
+        //     }
+        //     singleValResultInt = intA - intB;
+        // }
+
+                // Adjust intA for any prior borrowing
+        if (borrow == 1)
+        {
+            intA--;  // Account for the previous borrow
+            borrow = 0;
+        }
+
+        // Handle current borrowing if intA is less than intB
         if (intA < intB)
         {
-            intA += 10;
-            borrow = 1;
-            singleValResultInt = intA - intB;
+            intA += 10; // Borrow from the next higher digit
+            borrow = 1; // Set borrow for the next iteration
         }
-        else
-        {
-            if (borrow == 1)
-            {
-                intA--;
-            }
-            if (intA < intB)
-            {
-                intA += 10;
-                borrow = 1;
-                singleValResultInt = intA - intB;
-            }
-            else
-            {
-                borrow = 0;
-            }
-            singleValResultInt = intA - intB;
-        }
-        // printf("after if intA is %d\n", intA);
-        // printf("intB is %d\n", intB);
-        // printf("borrow is %d\n", borrow);
+        printf("after if intA is %d\n", intA);
+        printf("intB is %d\n", intB);
+        printf("borrow is %d\n", borrow);
 
         // borrow = 0;
         singleValResultInt = intA - intB;
-        // printf("singleValResultInt is %d\n", singleValResultInt);
-        // printf("singleValResultInt  + '0' is %c\n", singleValResultInt + '0');
+        printf("singleValResultInt is %d\n", singleValResultInt);
+        printf("singleValResultInt  + '0' is %c\n", singleValResultInt + '0');
 
         result[i] = singleValResultInt + '0';
+        printf("result[i] is %c\n", result[i]);
     }
 
     result = removeLeadingZeros(result);
