@@ -91,7 +91,7 @@ char *addLeadingZeros(char *arr, int newSize)
 
 char *addStrings(char *str1, char *str2)
 {
-    // printf("Inside addstrings\n");
+
     char *result;
     int size;
     char *arrA;
@@ -101,13 +101,11 @@ char *addStrings(char *str1, char *str2)
     int intA;
     int intB;
     int singleValResultInt;
-    // char singleValResultChar;
     //  Allocate memory for result depending on large char array size
     if (strlen(str1) > strlen(str2))
     {
         result = malloc(sizeof(char) * (strlen(str1) + 1));
         size = strlen(str1);
-        // minSize = strlen(str2);
         arrA = str1;
         arrB = addLeadingZeros(str2, size);
     }
@@ -115,45 +113,32 @@ char *addStrings(char *str1, char *str2)
     {
         result = malloc(strlen(str2) + 1);
         size = strlen(str2);
-        // minSize = strlen(str1);
         arrA = str2;
         arrB = addLeadingZeros(str1, size);
     }
-
-    // printf("arrA is %s\n", arrA);
-    // printf("arrB is %s\n", arrB);
-
     result[size] = '\0';
     int carry = 0;
 
-    
+    printf("arrA is %s\n", arrA);
+    printf("arrB is %s\n", arrB);
 
     for (int i = size - 1; i >= 0; i--)
     {
-        // printf("\n\n________________\nlooping\n");
-        // Get each character
-        // Assign zero if outside index of smaller one
-        // subtract '0' from each
-        // Add together.
-        // If grater than 9, then do mod 10 and set to new digit and
-        // set carry to 1
-        // Add this to the result character array
+
         charA = arrA[i];
         charB = arrB[i];
         intA = charA - '0';
         intB = charB - '0';
-	// printf("intA is %d\n", intA);
-	// printf("intB is %d\n", intB);
 
         singleValResultInt = intA + intB + carry;
         if (singleValResultInt > 9)
         {
             singleValResultInt = singleValResultInt % 10;
             carry = 1;
+        } else{
+            carry = 0;
         }
-        // printf("singleValResultInt is %d\n", singleValResultInt);
 	result[i] = singleValResultInt + '0';
-	// printf("result[i] = %c\n", result[i]);
     }
 
     return result;
