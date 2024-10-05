@@ -285,7 +285,7 @@ char *addStrings(char *str1, char *str2)
         arrA = str2;
         arrB = addLeadingZeros(str1, size);
     }
-    result[size] = '\0';
+    result[size+1] = '\0';
     int carry = 0;
 
     // printf("arrA is %s\n", arrA);
@@ -309,7 +309,7 @@ char *addStrings(char *str1, char *str2)
         {
             carry = 0;
         }
-        result[i] = singleValResultInt + '0';
+        result[i+1] = singleValResultInt + '0';
     }
 
 
@@ -319,7 +319,7 @@ char *addStrings(char *str1, char *str2)
         result[0] = '1';
         return result;
     }
-    return removeLeadingZeros(result);
+    return removeLeadingZeros(result+1);
 }
 
 int main()
