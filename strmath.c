@@ -252,8 +252,8 @@ char *addStrings(char *str1, char *str2)
     {
         // For each character in string we get its int value, and calculate the sum of 
         // both values plus the result of the carry from the previous additions
-        intA = arrA[i]; - '0';
-        intB = arrB[i]; - '0';
+        intA = arrA[i] - '0';
+        intB = arrB[i] - '0';
 
         singleValResultInt = intA + intB + carry;
         if (singleValResultInt > 9)
