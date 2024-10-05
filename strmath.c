@@ -138,14 +138,14 @@ char *subtractString(char *str1, char *str2)
     result[size] = '\0';
     borrow = 0;
 
-    printf("arrA is %s\n", arrA);
-    printf("arrB is %s\n", arrB);
+    // printf("arrA is %s\n", arrA);
+    // printf("arrB is %s\n", arrB);
     for (int i = size - 1; i >= 0; i--)
     {
-        printf("Looping --------------------\n");
-        printf("arrA is %s\n", arrA);
-        printf("arrB is %s\n", arrB);
-        printf("i is %d\n", i);
+        // printf("Looping --------------------\n");
+        // printf("arrA is %s\n", arrA);
+        // printf("arrB is %s\n", arrB);
+        // printf("i is %d\n", i);
         charA = arrA[i];
         charB = arrB[i];
         intA = charA - '0';
@@ -154,7 +154,7 @@ char *subtractString(char *str1, char *str2)
         // {
         //     intA--;
         // }
-        printf("before if intA is %d\n", intA);
+        // printf("before if intA is %d\n", intA);
         // if (intA < (intB + borrow))
         // {
         //     // intA += 10;
@@ -210,17 +210,17 @@ char *subtractString(char *str1, char *str2)
             intA += 10; // Borrow from the next higher digit
             borrow = 1; // Set borrow for the next iteration
         }
-        printf("after if intA is %d\n", intA);
-        printf("intB is %d\n", intB);
-        printf("borrow is %d\n", borrow);
+        // printf("after if intA is %d\n", intA);
+        // printf("intB is %d\n", intB);
+        // printf("borrow is %d\n", borrow);
 
-        // borrow = 0;
+        // // borrow = 0;
         singleValResultInt = intA - intB;
-        printf("singleValResultInt is %d\n", singleValResultInt);
-        printf("singleValResultInt  + '0' is %c\n", singleValResultInt + '0');
+        // printf("singleValResultInt is %d\n", singleValResultInt);
+        // printf("singleValResultInt  + '0' is %c\n", singleValResultInt + '0');
 
         result[i] = singleValResultInt + '0';
-        printf("result[i] is %c\n", result[i]);
+        // printf("result[i] is %c\n", result[i]);
     }
 
     result = removeLeadingZeros(result);
@@ -365,6 +365,20 @@ int main()
     // printf("After removing leading zeros str2 is %s \n", str2);
 
     // If first string zero, return second, covering negative case
+    if ((strcmp(str1, "0") == 0) && (strcmp(str2, "0") == 0))
+    {
+        printf("%s\n", str1);
+        return errorOccurred;
+    }
+
+    // If second string zero, return first string
+    if (strcmp(str2, "0") == 0)
+    {
+        printf("%s\n", str1);
+        return errorOccurred;
+    }
+
+
     if (strcmp(str1, "0") == 0)
     {
         if (strcmp(operation, "sub") == 0)
@@ -376,12 +390,9 @@ int main()
         return errorOccurred;
     }
 
-    // If second string zero, return first string
-    if (strcmp(str2, "0") == 0)
-    {
-        printf("%s\n", str1);
-        return errorOccurred;
-    }
+
+
+
 
     if (strcmp(operation, "add") == 0)
     {
