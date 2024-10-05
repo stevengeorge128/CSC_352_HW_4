@@ -63,6 +63,11 @@ char *addLeadingZeros(char *arr, int newSize)
     // printf("arr is %s\n", arr);
     int oldArrayIndex = 0;
     char *newArr = malloc(sizeof(char) * newSize);
+    if (newArr == NULL)
+    {
+        fprintf(stderr, "Error: Out of memory");
+        exit(1);
+    }
     int zerosToAdd = newSize - strlen(arr);
     if (zerosToAdd == 0)
     {
@@ -90,7 +95,7 @@ char *addLeadingZeros(char *arr, int newSize)
     return newArr;
 }
 
-char subtractString(char *str1, char *str2)
+char *subtractString(char *str1, char *str2)
 {
 
     char *result;
@@ -109,10 +114,14 @@ char subtractString(char *str1, char *str2)
     {
         neg = 1;
         arrA = str2;
-        arrB = str1;
         size = strlen(arrA);
-        addLeadingZeros(arrB, size);
+        arrB = addLeadingZeros(str1, size);
         result = malloc(sizeof(char) * (size + 1));
+        if (result == NULL)
+        {
+            fprintf(stderr, "Error: Out of memory");
+            exit(1);
+        }
     }
     else
     {
@@ -120,26 +129,101 @@ char subtractString(char *str1, char *str2)
         size = strlen(arrA);
         arrB = addLeadingZeros(str2, size);
         result = malloc(sizeof(char) * (size + 1));
+        if (result == NULL)
+        {
+            fprintf(stderr, "Error: Out of memory");
+            exit(1);
+        }
     }
     result[size] = '\0';
     borrow = 0;
+
+    // printf("arrA is %s\n", arrA);
+    // printf("arrB is %s\n", arrB);
     for (int i = size - 1; i >= 0; i--)
     {
-
+        // printf("Looping --------------------\n");
+        // printf("arrA is %s\n", arrA);
+        // printf("arrB is %s\n", arrB);
+        // printf("i is %d\n", i);
         charA = arrA[i];
         charB = arrB[i];
         intA = charA - '0';
         intB = charB - '0';
-        if (intA <(intB + borrow)){
+        // if (borrow == 1)
+        // {
+        //     intA--;
+        // }
+        // printf("before if intA is %d\n", intA);
+        // if (intA < (intB + borrow))
+        // {
+        //     // intA += 10;
+        //     // borrow = 1;
+        //     intA += 10;                                // Borrow from the next digit
+        //     singleValResultInt = intA - intB - borrow; // Perform the subtraction
+        //     borrow = 1;                                // Set borrow for the next iteration
+        // }
+        // else
+        // {
+        //     if (borrow == 1){
+        //         intA --;
+        //     }
+        //     singleValResultInt = intA - intB - borrow;
+        //     borrow = 0; // No need to borrow
+        // }
+        if (intA < intB)
+        {
             intA += 10;
             borrow = 1;
-        } else{
-            borrow = 1;
+            singleValResultInt = intA - intB;
         }
-        singleValResultInt = intA - intB - borrow + '0';
-        result[i] = singleValResultInt;
+        else
+        {
+            if (borrow == 1)
+            {
+                intA--;
+            }
+            if (intA < intB)
+            {
+                intA += 10;
+                borrow = 1;
+                singleValResultInt = intA - intB;
+            }
+            else
+            {
+                borrow = 0;
+            }
+            singleValResultInt = intA - intB;
+        }
+        // printf("after if intA is %d\n", intA);
+        // printf("intB is %d\n", intB);
+        // printf("borrow is %d\n", borrow);
 
+        // borrow = 0;
+        singleValResultInt = intA - intB;
+        // printf("singleValResultInt is %d\n", singleValResultInt);
+        // printf("singleValResultInt  + '0' is %c\n", singleValResultInt + '0');
+
+        result[i] = singleValResultInt + '0';
     }
+
+    result = removeLeadingZeros(result);
+
+    if (neg == 1)
+    {
+
+        char *final = malloc(sizeof(char) * strlen(result));
+        if (final == NULL)
+        {
+            fprintf(stderr, "Error: Out of memory");
+            exit(1);
+        }
+        final[0] = '-';
+        strcpy(final + 1, result);
+        return final;
+    }
+
+    return result;
 }
 
 char *addStrings(char *str1, char *str2)
@@ -159,6 +243,11 @@ char *addStrings(char *str1, char *str2)
     {
         size = strlen(str1);
         result = malloc(sizeof(char) * (size + 1));
+        if (result == NULL)
+        {
+            fprintf(stderr, "Error: Out of memory");
+            exit(1);
+        }
 
         arrA = str1;
         arrB = addLeadingZeros(str2, size);
@@ -167,6 +256,11 @@ char *addStrings(char *str1, char *str2)
     {
         size = strlen(str2);
         result = malloc(size + 1);
+        if (result == NULL)
+        {
+            fprintf(stderr, "Error: Out of memory");
+            exit(1);
+        }
 
         arrA = str2;
         arrB = addLeadingZeros(str1, size);
@@ -198,7 +292,7 @@ char *addStrings(char *str1, char *str2)
         result[i] = singleValResultInt + '0';
     }
 
-    return result;
+    return removeLeadingZeros(result);
 }
 
 int main()
@@ -276,7 +370,13 @@ int main()
     if (strcmp(operation, "add") == 0)
     {
         result = addStrings(str1, str2);
-        removeLeadingZeros(result);
+        // removeLeadingZeros(result);
+        printf("%s\n", result);
+    }
+    else
+    {
+        result = subtractString(str1, str2);
+        // removeLeadingZeros(result);
         printf("%s\n", result);
     }
 
