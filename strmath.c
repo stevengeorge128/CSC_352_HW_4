@@ -55,8 +55,40 @@ char *removeLeadingZeros(char *str)
     return str;
 }
 
+char *addLeadingZeros(char *arr, int newSize)
+{
+    // printf("----------\n inside addLeadingZeros");
+    // printf("new size is %d\n", newSize);
+    // printf("arr len is %lu\n" , strlen(arr));
+    // printf("arr is %s\n", arr);
+
+    char *newArr = malloc(sizeof(char) * newSize);
+    int zerosToAdd = newSize - strlen(arr);
+    if (zerosToAdd == 0){
+        return arr;
+    }
+    // printf("zerosToAdd is  %d\n", zerosToAdd);
+    for (int i = 0; i < newSize; i++)
+    {
+        // printf("newArr is %s\n", newArr);
+        // printf("i is %d\n", i);
+        if (i < zerosToAdd)
+        {
+            newArr[i] = '0';
+        }
+        else
+        {
+            newArr[i] = arr[i + 1 - newSize];
+        }
+    }
+    // printf("Leaving addLeadingZeros\n ----------\n ");
+
+    return newArr;
+}
+
 char *addStrings(char *str1, char *str2)
 {
+    // printf("Inside addstrings\n");
     char *result;
     int size;
     int minSize;
@@ -66,28 +98,37 @@ char *addStrings(char *str1, char *str2)
     char charB;
     int intA;
     int intB;
-    int singleValResult;
-    // Allocate memory for result depending on large char array size
+    int singleValResultInt;
+    // char singleValResultChar;
+    //  Allocate memory for result depending on large char array size
     if (strlen(str1) > strlen(str2))
     {
-        result = malloc(strlen(str1) + 1);
+        result = malloc(sizeof(char) * (strlen(str1) + 1));
         size = strlen(str1);
-        minSize = strlen(str2);
+        // minSize = strlen(str2);
         arrA = str1;
-        arrB = str2;
+        arrB = addLeadingZeros(str2, size);
     }
     else
     {
         result = malloc(strlen(str2) + 1);
         size = strlen(str2);
-        minSize = strlen(str1);
+        // minSize = strlen(str1);
         arrA = str2;
-        arrB = str1;
+        arrB = addLeadingZeros(str1, size);
     }
 
+    // printf("arrA is %s\n", arrA);
+    // printf("arrB is %s\n", arrB);
+
+    result[size] = '\0';
     int carry = 0;
+
+    
+
     for (int i = size - 1; i >= 0; i--)
     {
+        // printf("\n\n________________\nlooping\n");
         // Get each character
         // Assign zero if outside index of smaller one
         // subtract '0' from each
@@ -96,21 +137,17 @@ char *addStrings(char *str1, char *str2)
         // set carry to 1
         // Add this to the result character array
         charA = arrA[i];
-        if (!(i >= minSize)){
-            charB = arrB[i];
-        } else{
-            charB = '0';
-        }
+        charB = arrB[i];
         intA = charA - '0';
         intB = charB - '0';
-        singleValResult = intA + intB + carry;
-        if (singleValResult > 9){
-            singleValResult = singleValResult % 10; 
+
+        singleValResultInt = intA + intB + carry;
+        if (singleValResultInt > 9)
+        {
+            singleValResultInt = singleValResultInt % 10;
             carry = 1;
         }
-        result[i] = singleValResult;
-
-
+        result[i] = singleValResultInt + '0';
     }
 
     return result;
@@ -126,6 +163,7 @@ int main()
     size_t len1 = 0;
     size_t len2 = 0;
     int retVal;
+    char *result;
 
     retVal = getline(&operation, &lenOp, stdin);
     newlineToNullTerm(operation);
@@ -165,8 +203,8 @@ int main()
 
     str1 = removeLeadingZeros(str1);
     str2 = removeLeadingZeros(str2);
-    printf("After removing leading zeros str1 is %s \n", str1);
-    printf("After removing leading zeros str2 is %s \n", str2);
+    // printf("After removing leading zeros str1 is %s \n", str1);
+    // printf("After removing leading zeros str2 is %s \n", str2);
 
     // If first string zero, return second, covering negative case
     if (strcmp(str1, "0") == 0)
@@ -189,7 +227,9 @@ int main()
 
     if (strcmp(operation, "add") == 0)
     {
-        addStrings(str1, str2);
+        result = addStrings(str1, str2);
+        removeLeadingZeros(result);
+        printf("%s\n", result);
     }
 
     return errorOccurred;
