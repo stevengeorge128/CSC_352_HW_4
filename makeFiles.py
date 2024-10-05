@@ -1,3 +1,3 @@
-for i in range(23,35):
+for i in range(50,65):
     name = "test" + str(i) + ".txt"
     file = open(name, "w")
